@@ -1,6 +1,7 @@
 # web-practice-xiyu
 
 ## 常见数据结构及其JavaScript实现
+
 dataStructure：常见的数据结构和对应的Javascript的实现
 
 01 Stack(栈)
@@ -19,7 +20,7 @@ dataStructure：常见的数据结构和对应的Javascript的实现
 
 08 Graph(图)
 
-## js基础
+## Javascrip基础
 
 01继承的实现
 
@@ -37,5 +38,4 @@ Sort：常见的排序方法
 
 05 归并排序
 
-
-** ...未完待续**
+...未完待续
