@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>哈希表散列表</title>
+</head>
+
+<body>
+  <script>
+    // 用于存储键值对的数据结构，最大优点是高效，在哈希表中插入、删除或查找一个元素都只需要O(1)的时间，优化时间效率
+    //     HashMap和HashSet
+    //     HashSet(每个元素都只有一个值)
+    //     HashMap(如果每个元素都存在一个值到另外一个值的映射，就用HashMap
+    //     add：增加一组键值对，
+    //     remove：删除一组键值对
+    //     lookup: 查找一个键值对
+    function hash(string, max) {
+      var hash = 0;
+      for (var i = 0; i < string.length; i++) {
+        hash += string.charCodeAt(i);
+      }
+      return hash % max;
+    }
+
+    function HashTable() {
+      let storage = [];
+      const storageLimit = 4;
+      this.add = function (key, value) {
+        var index = hash(key, storageLimit);
+        if (storage[index] === undefined) {
+          storage[index] = [[key, value]];
+        } else {
+          var inserted = false;
+          for (var i = 0; i < storage[index].length; i++) {
+            if (storage[index][i][0] === key) {
+              storage[index][i][1] = value;
+              inserted = true;
+            }
+          }
+          if (inserted === false) {
+            storage[index].push([key, value]);
+          }
+        }
+      }
+      this.remove = function (key) {
+        var index = has(key, storageLimit);
+        if (storage[index].length === 1 && storage[index][0][0] === key) {
+          delete storage[index];
+        } else {
+          for (var i = 0; i < storage[index]; i++) {
+            if (storage[index][i][0] === key) {
+              delete storage[index][i];
+            }
+          }
+        }
+      }
+
+    }
+
+
+    this.lookup = function (key) {
+      var index = has(key, storageLimit);
+      if (storage[index] === undefined) {
+        return undefined
+      }
+      else {
+        for (var i = 0; i < storage[index].length; i++) {
+          if (storage[index][i][0] === key) {
+            return storage[index][i][1];
+          }
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

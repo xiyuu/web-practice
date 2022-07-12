@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>排序</title>
+</head>
+
+<body>
+  <script>
+    // 快速排序：选一个元素为基准元素，将比他小的移动到元素的左边，比他他的移动到右边，重复以上步骤，时间复杂度为O(nlogn)
+    // 快排的时间复杂度取决于锁选取的中间值在数组中的位置，如果每次选取的中间值在排序数组中都接近数组中间的位置，那么快排的时间复杂度是O(nlogn)
+    // 如果每次选中的中间值都位于数组的的头部或者尾部，则时间复杂度为O(n的平方)
+    function quickSort(arr) {
+      if (arr.length < 2) {
+        return arr
+      }
+      var left = []; var right = []; var mid = arr.splice(Math.floor(arr.length / 2), 1)
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] < mid) {
+          left.push(arr[i]);
+        } else {
+          right.push(arr[i])
+        }
+      }
+      return quickSort(left).concat(mid, quickSort(right))
+    }
+
+    // console.log(quickSort([5, 3, 45, 67, 8, 8, 9, 90, 0, 9]))
+    // 冒泡排序
+    // 原理，通过双重for循环比较两个相邻元素的值。定义一个中间变量，若后面的值小于前面的值，则交换位置
+    function bubble(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr.length - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+          console.log('第一层循环' + i, j, arr);
+        }
+        console.log('第二层循环' + i, j, arr);
+      }
+      return arr;
+    }
+    // console.log(bubble([5, 6, 1, 2, 4, 3]))
+    // 选择排序
+    function selectSort(arr) {
+      for (var i = 0; i < arr.length - 1; i++) {
+        var min = i;
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[j] < arr[min]) {
+            min = j;
+          }
+        }
+        temp = arr[i];
+        arr[i] = arr[min];
+        arr[min] = temp;
+
+      }
+      return arr
+    }
+
+    // console.log(selectSort([5, 6, 1, 2, 4, 3]))
+    // 归并排序
+    // 合并两个已排序的数组
+    // 返回一个合并后的已排序的新数组
+    function mergeSortTopDown(arr) {
+      // 如果数组元素为0或者1，标明已排序
+      if (arr.length <= 1) {
+        return arr
+      }
+      // 把数组从中间切为两部分，
+      var middle = Math.floor(arr.length / 2);
+      var left = arr.splice(0, middle)
+      var right = arr.splice(middle)
+      // 递归排序这两个子数组
+      left = mergeSortTopDown(left)
+      right = mergeSortTopDown(right)
+      // 合并两个已排序的子数组
+      return merge(left, right)
+    }
+    function merge(arr1, arr2) {
+      var result = [];
+      while (arr1.length && arr2.length) {
+        if (arr1[0] < arr2[0]) {
+          result.push(arr1.shift())
+        } else {
+          result.push(arr2.shift());
+        }
+      }
+      // 若两个元素中有元素剩余，合并入新数组
+      return result.concat(arr1, arr2);
+    }
+    var arr1 = [7, 3, 8];
+    var arr2 = [6, 12, 5];
+    // console.log(merge(arr1, arr2))
+    console.log(mergeSortTopDown([25, 89, 544, 1, 5, 5, 3, 9]))
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>js实现树</title>
+</head>
+
+<body>
+  <script>
+    // 深部遍历
+    // 前序遍历、中序遍历、后续遍历
+    // 前序遍历，顺序为根节点、左节点、右节点
+    // 中序遍历，顺序为左节点，根节点，右节点
+    // 后序遍历，顺序为左节点，右节点，根节点
+    // 1.Root(根)：代表树的根节点，根节点没有父节点
+    // 2.Parent Node(父节点)：一个节点的直接上级节点，只有一个
+    // 3.Child Node(子节点)：一个节点的直接下级节点，可能有多个
+    // 4.Sibing(兄弟节点)：具有相同父节点的节点
+    // 5.Leaf(叶节点)：没有子节点的节点
+    // 6.Edge(边)：两个节点之前的连接线
+    // 7.Path(路径)：从源节点到目标节点的连续边
+    //  8.Height of Node(节点的高度)：表示节点与叶节点之间的最长路径上边的个数
+    // 9.Hight of Tree(树的高度)：即根节点的高度
+    // 10.Depth of Node (节点的深度)：表示从根节点到该节点的边的个数
+    // 11.Depth od Node(节点的度)：表示子节点的个数
+    // 二叉查找树，在二叉查找树中，即每个节点最多只有两个子节点，而左侧节点小于当前节点，右侧节点大于当前节点
+
+    // 二叉查找树应该具有以下常用方法
+    // 1.add：向树中插入一个节点
+    // 2.findMix:查找树中最小的节点
+    // 3.findMax：查找树中最大的节点
+    // 4.find：查找树中的某个节点
+    // 5.isPresent:判断某个节点在书中是否存在
+    // 5.remove：移除树中的节点
+
+    class Node {
+      constructor(data, left = null, right = null) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
+      }
+    }
+
+    class BST {
+      constructor() {
+        this.root = null;
+      }
+
+      add(data) {
+        const node = this.root;
+        if (node === null) {
+          this.root = new Node(data);
+          return;
+        } else {
+          const seachTree = function (node) {
+            if (data < node.data) {
+              if (node.left === null) {
+                node.left = new Node(data);
+                return;
+              } else if (node.left !== null) {
+                return seachTree(node.left)
+              }
+            } else if (data > node.data) {
+              if (node.right === null) {
+                node.right = new Node(data);
+              } else if (node.right !== null) {
+                return seachTree(node.right)
+              }
+            } else {
+              return null
+            }
+          };
+          return seachTree(node);
+        }
+      }
+
+
+      findMin() {
+        let current = this.root;
+        while (current.left !== null) {
+          current = current.left;
+        }
+        return current.data;
+      }
+
+      findMax() {
+        let current = this.root;
+        while (current.right !== null) {
+          current = current.right;
+        }
+        return current.data;
+      }
+
+      find(data) {
+        let current = this.root;
+        while (current.data !== data) {
+          if (data < current.data) {
+            current = current.left;
+          } else {
+            current = current.right
+          }
+          if (current === null) {
+            return null
+          }
+        }
+        return current
+      }
+
+      isPresent(data) {
+        let current = this.root;
+        while (current) {
+          if (data === current.data) {
+            return true;
+          }
+          if (data < current.data) {
+            current = current.left;
+          } else {
+            current = current.right;
+          }
+        }
+        return false
+      }
+
+      remove(data) {
+        const removeNode = function (node, data) {
+          if (node == null) {
+            return null;
+          }
+          if (data == node.data) {
+            // node没有子节点
+            if (node.left == null && node.right == null) {
+              return null
+            }
+            // node没有左侧子节点
+            if (node.left == null) {
+              return node.right
+            }
+            // node没有右侧子节点
+            if (node.right == null) {
+              return node.left
+            }
+            // node有两个子节点
+            var tempNode = node.right;
+            while (tempNode.left !== null) {
+              tempNode = tempNode.left;
+            }
+            node.data = tempNode.data;
+            node.right = removeNode(node.right, tempNode.data);
+            return node;
+          } else
+            if (data < node.data) {
+              node.left = removeNode(node, left, data);
+              return node;
+            } else {
+              node.right = removeNode(node, right, data);
+              return node;
+            }
+        }
+        this.root = removeNode(this.root, data)
+      }
+    }
+  </script>
+</body>
+
+</html>
