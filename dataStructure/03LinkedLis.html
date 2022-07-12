@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>js实现链表</title>
+</head>
+
+<body>
+  <script>
+    // 一种链式存储的线性表，由节点本身的数据和指向下一个节点的指针
+    // size：返回链表中节点的个数
+    // head：返回链表的头部元素
+    // add：向链表尾部增加一个节点
+    // remove：删除某个节点
+    // indexOf:返回某个节点的index
+    // elementAt:返回某个index处的节点
+    // addAt:在某个index除插入一个节点
+    // removeAt:删除某个index处的节点
+    var linkedList = LinkedList();
+    linkedList.add("1");
+    linkedList.add("2");
+    linkedList.add("3");
+    linkedList.add("4");
+    linkedList.add("5");
+    linkedList.add("6");
+    linkedList.add("7");
+    console.log(linkedList);
+    function Node(element) {
+      // 节点中的数据
+      this.element = element;
+      // 指向下一个节点的指针
+      this.next = null;
+    }
+
+    function LinkedList() {
+      var length = 0;
+      var head = null;
+      var arr = [];
+      this.size = function () {
+        return length;
+      }
+
+      this.head = function () {
+        return head
+      }
+
+      this.arr = function () {
+        return arr
+      }
+
+      this.add = function (element) {
+        var node = new Node(element);
+        if (head == null) {
+          head = node;
+        } else {
+          var currentNode = head;
+          while (currentNode.next) {
+            currentNode = currentNode.next;
+          }
+          currentNode.next = node;
+        }
+        length++;
+        arr.push(node);
+      }
+
+      // 1 -> 2 -> 3 ->
+      this.remove = function (element) {
+        var currentNode = head;
+        var previousNode;
+        if (currentNode.element === element) {
+          head = currentNode.next;
+          currentNode.next = null;
+        } else {
+          while (currentNode.element !== element) {
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+          }
+          previousNode.next = currentNode.next;
+          currentNode.next = null;
+        }
+        length--;
+      }
+
+      this, isEmpty = function () {
+        return length === 0;
+      }
+
+      this.indexOf = function (element) {
+        var currentNode = head;
+        var index = -1;
+        while (currentNode) {
+          index++;
+          if (currentNode.element === element) {
+            return index;
+          }
+          currentNode = currentNode.next;
+        }
+        return -1;
+      }
+
+      this.elementAt = function (index) {
+        var currentNode = head;
+        var count = 0;
+        while (count < index) {
+          count++;
+          currentNode = currentNode.next;
+        }
+        return currentNode.element;
+      }
+
+      this.addAt = function (index, element) {
+        var node = new Node(element);
+        var currentNode = head;
+        var previousNode;
+        var currentIndex = 0;
+        if (index > length) {
+          return false
+        }
+
+        if (index === 0) {
+          node.next = currentNode;
+          head = node;
+        } else {
+          while (currentIndex < index) {
+            currentIndex++;
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+
+          }
+          node.next = currentNode;
+          previousNode.next = node;
+        }
+        length++;
+      }
+
+      this.removeAt = function (index) {
+        var currentNode = head;
+        var previousNode;
+        var currentIndex = 0;
+        if (index < 0 || index >= length) {
+          return null;
+        }
+        if (index === 0) {
+          head = currentNode.next;
+        } else {
+          while (currentIndex < index) {
+            currentIndex++;
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+          }
+          previousNode.next = currentNode.next;
+        }
+        length--;
+        return currentNode.element;
+      }
+    }
+
+  </script>
+</body>
+
+</html>

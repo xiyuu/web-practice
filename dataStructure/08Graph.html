@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>图</title>
+</head>
+
+<body>
+  <script>
+    // Graph是节点(顶点)以及他们之前的连接(或边)的集合
+    // Graph也可以用来表示网络
+    // 根据节点之间的连接是否有方向可以分为有向图和无向图
+    // 邻接列表
+    // 邻接矩阵
+    function bfs(graph, root) {
+      var nodesLen = {};
+      for (var i = 0; i < graph.length; i++) {
+        nodesLen[i] = Infinity;
+      }
+      nodesLen[root] = 0;
+
+      var queue = [root];
+      var current;
+      while (queue.length != 0) {
+        current = queue.shift();
+
+        var curConnected = group[current];
+        var neighborIdx = [];
+        var idx = curConnected.indexOf(1);
+        while (inx != -1) {
+          neighborIdx.push(idx);
+          idx = curConnected.indexOf(1, idx + 1)
+        }
+      }
+      for (var j = 0; j < neighborIdx.length; j++) {
+        if (nodesLen[neighborIdx[j]] == Infinity) {
+          nodesLen[neighborIdx[j]] = nodesLen[current] + 1;
+          queue.push(neighborIdx[j]);
+        }
+      }
+
+    }
+  </script>
+</body>
+
+</html>
