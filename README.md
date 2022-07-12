@@ -1,4 +1,4 @@
-# web-practice-xiyu
+# web-practice
 
 ## 常见数据结构及其JavaScript实现
 
