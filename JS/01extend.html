@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组合继承</title>
+</head>
+
+<body>
+    <script>
+        // 父类
+        function Animal(name) {
+            //基本数据类型属性
+            this.name = name;
+            //引用类型属性
+            this.color = ['black', 'white'];
+            this.getName = function () {
+                return this.name
+            };
+        };
+        //1.原型链继承直接将构造函数的prototype属性赋值为想要继承的对象的实例
+        function Cat() { }
+        Cat.prototype = new Animal()//这里丢失了constructor
+
+        //hulu继承了Animal，应该也有name属性，但是此时不能，初始化hulu的name属性。不能为父类的构造函数传参
+        //如果在Cat原型属性赋值时为父类构造函数传参会导致所有的Cat实例对象名字一样
+        let hulu = new Cat('hullu');
+        //原型类型中的引用类型属性会被所有Cat实例对象共享。
+        hulu.color.push('yellow')
+        let lulu = new Cat()
+        //lulu的color也有yellow
+        console.log(lulu.color)
+
+        /*原型链继承的问题：
+        1.原型中包含的引用类型被所有实例共享
+        2.子类在实例化的时候不能给父类构造函数传参
+         */
+
+        //2.借用构造函数实现继承
+        function Dog(name) {
+            //调用父类构造函数，继承父类中的属性和方法。
+            // 可以给父类构造函数传参。
+            Animal.call(this, name);
+        }
+
+        let hh = new Dog('hh')
+        hh.color.push('gray')
+        let oo = new Dog('oo')
+        //Dog的实例对象不再共享color。hh对color的修改不影响oo的color
+        console.log(oo.color)
+        console.log(hh.color)
+        //引用类型不再相等意味着方法也不再相等，每次都会新建一个getName对象，这是没必要的
+        console.log(hh.getName === oo.getName)
+
+        //单独使用盗用构造函数导致Dog之能使用Animal构造函数中的方法，且每次都是新建的。原型中的方法无法使用
+        Animal.prototype.getColor = function () {
+            return 'dog,getcolor'
+        }
+        console.log(hh.getColor)//undefined
+        /*借用构造函数的问题：方法必须定义在构造函数中，导致每次创建子类实例都会创建一遍方法 */
+
+        //3.组合继承
+        function Pig(name, age) {
+            //盗用构造函数
+            Animal.call(this, name)
+            this.age = age;
+
+        }
+        //原型链继承
+        Pig.prototype = new Animal()//这里丢失了constructor
+
+        Animal.prototype.getColor = function () {
+            return this.color
+        }
+        let pp = new Pig('pp')
+        console.log(pp.getColor())//可以访问Animal原型中的方法
+
+        /* 组合继承已经相对完美了，但是仍然存在的问题就是调用了两次父类构造函数。第一次是new，第二次是call
+           解决思路就是不直接调用父类构造函数给子类原型赋值，而是通过创建空函数获取父类原型的副本
+         */
+
+        function Bird(name) {
+            Animal.call(this, name)
+        }
+        Bird.prototype = Object.create(Animal.prototype)
+        //还解决了constructor丢失的问题
+        Bird.prototype.constructor = Bird;
+        let jojo = new Bird('jojo');
+        jojo.voice = 'jojo'
+        console.log(jojo.getName())
+
+        // ES6中引入了类
+        // 类实现继承
+        class Person {
+            constructor(name) {
+                this.name = name;
+            }
+            getName() {
+                return this.name
+            }
+        }
+        class Student extends Person {
+            constructor(name, school) {
+                super(name)
+                this.school = school;
+            }
+
+        }
+        let s = new Student('Tom', "Tinghua")
+        console.log(s)
+        let p = new Person('PP')
+
+        /**
+         * 总结：后面的方法都是针对前面方法存在的问题进行的改进，解决了前一步的问题
+         * a.原型链存在问题：1.引用类型属性为所有实例共享，一个修改，所有的都改变。2.不能给父类构造函数传参
+         * b.盗用构造函数存在问题 ：1.只能使用父类构造函数内的方法，父类原型对象中的方法无法访问，只能访问构造函数内的方法和属性，且每次创建实例会创建方法，两个实例对象的相同方法===false
+         * c.组合继承（既有盗用构造函数又有原型链）存在问题：1.调用两次父类构造函数
+         * d.寄生式组合继承：Object.create(Animal.prototype)
+         * class实现继承：终极解决方案
+         * 注意：只要使用了原型链继承的都存在constructor丢失的问题。（a,c）
+         * b,d,class没有丢失constructor
+         */
+    </script>
+</body>
+
+</html>

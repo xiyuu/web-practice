@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>throttle</title>
+</head>
+
+<body>
+    <script>
+        function throttle(func, delay) {
+            let run = true
+            return function () {
+                if (!run) {
+                    return
+                } else {
+                    run = false
+                    func.apply(this, arguments)
+                    setTimeout(function () {
+                        run = true
+                    }, delay)
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

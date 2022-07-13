@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bind</title>
+</head>
+
+<body>
+    <script>
+        Function.prototype.myBind = function (obj) {
+            // 从arguments第2个开始是参数
+            var args = Array.prototype.slice.call(arguments, 1)
+            var fn = this
+            // 返回一个绑定好的方法
+            return function () {
+                var newArgs = Array.prototype.slice.call(arguments)
+                // 可能存在foo.bind(obj,args)(newArgs),所以要把两个参数拼在一起
+                fn.apply(obj, args.concat(newArgs))
+            }
+        }
+    </script>

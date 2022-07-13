@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>new</title>
+</head>
+
+<body>
+    <script>
+        let newMethod = function (Parent, ...rest) {
+            // 1、以构造器的prototype属性为原型，创建新对象
+            let child = Object.create(Parent.prototype)
+            // 2、将this(也就是上一句中的新对象)和调用参数传给构造器，执行
+            let result = Parent.call(child, ...rest)
+            // 3、如果构造器没有手动返回对象，则返回第一步创建的新对象，如果有，则舍弃掉第一步创建的新对象，返回手动return的对象
+            return result instanceof Object ? result : child
+        }
+
+        let Parent = function (name, age) {
+            this.name = name;
+            this.age = age;
+        };
+    </script>

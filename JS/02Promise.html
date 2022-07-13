@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>promise</title>
+</head>
+
+<body>
+  <script>
+    // 手写Promise\ Promise.resolve,Promise.reject,Promise.all,Promise.race,
+    class MyPromise {
+      statu = "pending" //状态 pending fulfilled rejected
+      value = undefined; //成功以后的值
+      reason = undefined //失败以后的值
+      resolveCallbacks = []; //pending状态下，成功以后的回调函数
+      rejectCallbacks = [];//pending状态下，失败以后的回调函数
+      constructor(fn) {
+        const resolveHandler = (value) => {
+          if (this.state === "pending") {
+            this.state = "fulfilled",
+              this.value = value;
+            this.rejectCallbacks.forEach(fn => fn(this.value));
+          }
+        }
+
+        const rejectHandler = (reason) => {
+          if (this.state === "pending") {
+            this.state = 'rejected'
+            this.reason = reason
+            this.rejectCallbacks.forEach(fn => fn(this.value));
+          }
+        }
+
+        try {
+          fn(resolveHandler, rejectHandler)
+        } catch (err) {
+          rejectHandler(err)
+        }
+      }
+      then(fn1, fn2) {
+        // 当pending状态下,fn1和fn2会被存储到callbacks中
+        fn1 = typeof fn1 === "function" ? fn1 : (v) => v;
+        fn2 = typeof fn2 === "function" ? fn2 : (e) => e;
+        if (this.state === "pending") {
+          const p1 = new MyPromise((resolve, reject) => {
+            this.resolveCallbacks.push(() => {
+              try {
+                const newValue = fn1(this.value);
+                resolve(newValue)
+              } catch {
+                reject(err)
+              }
+            })
+            this.rejectCallbacks.push(() => {
+              try {
+                const newReason = fn2(this.Reason)
+                reject(newReason)
+              } catch {
+                reject(err)
+              }
+            })
+          })
+          return p1
+        }
+
+        if (this.state === "fulfilled") {
+          const p1 = new MyPromise((resolve, reject) => {
+            try {
+              const newValue = fn1(this.value)
+              resolve(newValue)
+            } catch (err) {
+              reject(err)
+            }
+          })
+          return p1
+        }
+
+        if (this.state === "rejected") {
+          const p1 = new MyPromise((resolve, reject) => {
+            try {
+              const newReason = fn2(this.reason);
+              reject(newReason)
+            } catch (err) {
+              reject(err)
+            }
+          })
+          return p1
+        }
+      }
+      // 就是then的语法糖，简单模式
+      catch(fn) {
+        return this.then(null, fn)
+      }
+    }
+
+    MyPromise.resolve = function (value) {
+      return new MyPromise((resolve, reject) => {
+        resolve(value)
+      })
+    }
+
+    MyPromise.reject = function (reason) {
+      return new MyPromise((resolve, reject) => {
+        reject(reason)
+      })
+    }
+
+    MyPromise.all = function (promiseList = []) {
+      const p1 = new MyPromise((resolve, reject) => {
+        const result = [];
+        const length = promiseList.length;
+        let resolvedCount = 0;
+        promiseList.forEach((p) => {
+          p.then(data => {
+            result.push(data);
+            resolvedCount++; //同理，resolvedCount 必须在then里面++；
+            // 这里不能用forEach 的 index来判断 index === length - 1，因为forEach不是一个异步循环，index会一下子增加到最大，而promiseList中的每一个promise还不一定执行完
+            if (resolvedCount === length) {
+              resolve(result)
+            }
+          }).catch(err => {
+            reject(err)
+          })
+        })
+      })
+      return p1
+    }
+    MyPromise.race = function (promiseList = []) {
+      let resolved = false;
+      const p1 = new MyPromise((resolve, reject) => {
+        promiseList.forEach(p => {
+          p.then(data => {
+            if (!resolved) {
+              resolve(data)
+              resolved = true
+            }
+          }).catch((err) => {
+            reject(err)
+          })
+        })
+      })
+      return p1
+
+    }
+
+
+  </script>
+</body>
+
+</html>
