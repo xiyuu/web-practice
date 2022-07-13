@@ -20,9 +20,27 @@ dataStructure：常见的数据结构和对应的Javascript的实现
 
 08 Graph(图)
 
-## Javascrip基础
+## Javascrip基础(手写前端基础题)
 
-01继承的实现
+01手写继承
+
+02手写Promise、Promise.all、Promise.race
+
+03手写jsonp
+
+04手写instanceof
+
+05手写call
+
+06手写apply
+
+07手写bind
+
+08手写new
+
+09手写防抖debounce
+
+10手写节流throttle
 
 ## 前端常见排序方法
 

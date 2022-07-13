@@ -66,21 +66,26 @@
     // 合并两个已排序的数组
     // 返回一个合并后的已排序的新数组
     function mergeSortTopDown(arr) {
-      // 如果数组元素为0或者1，标明已排序
-      if (arr.length <= 1) {
+      // 如果数组元素小于2 为0或者1，标明已排序
+      if (arr.length < 2) {
         return arr
       }
       // 把数组从中间切为两部分，
       var middle = Math.floor(arr.length / 2);
-      var left = arr.splice(0, middle)
-      var right = arr.splice(middle)
+      var left = arr.slice(0, middle)
+      var right = arr.slice(middle)
       // 递归排序这两个子数组
       left = mergeSortTopDown(left)
+      console.log('left ' + left)
       right = mergeSortTopDown(right)
+      console.log('right ' + right)
       // 合并两个已排序的子数组
+      console.log('merge: ' + merge(left, right))
       return merge(left, right)
     }
     function merge(arr1, arr2) {
+      console.log('arr1： ' + arr1)
+      console.log('arr2： ' + arr2)
       var result = [];
       while (arr1.length && arr2.length) {
         if (arr1[0] < arr2[0]) {
@@ -90,10 +95,11 @@
         }
       }
       // 若两个元素中有元素剩余，合并入新数组
+      console.log('result： ' + result.concat(arr1, arr2))
       return result.concat(arr1, arr2);
     }
-    var arr1 = [7, 3, 8];
-    var arr2 = [6, 12, 5];
+    // var arr1 = [7, 3, 8];
+    // var arr2 = [6, 12, 5];
     // console.log(merge(arr1, arr2))
     console.log(mergeSortTopDown([25, 89, 544, 1, 5, 5, 3, 9]))
 
