@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <title>杨辉三角</title>
+</head>
+
+<body>
+  <script>
+    // 解法1:思路 采用递归,按照杨辉三角的规律所求数字等于其左上角、右上角两数之和。
+    // 时间复杂度：O(N^2)
+    // 空间复杂度：O(1)。不考虑返回值的空间占用
+    var yanghuiTriangle1 = function (n, m) {
+      // 判断是否满足题目中的条件
+      if (n <= 0 || m > 10000 || m >= n + 1) return false;
+      let result = 1;
+      // n == m:若n==m,表示第n行的最后一个数字,为1
+      // m == 1:m == 1,表示第n行的第一个数字,为1
+      if (n == m || m == 1) {
+        return result;
+      }
+      return yanghuiTriangle1(n - 1, m - 1) + yanghuiTriangle1(n - 1, m);
+    }
+
+    // 解法2:思路 杨辉三角满足C(n-1,m-1)=(n-1)*(n-2)...(n-m+1)/(m-1)!
+    // 时间复杂度：O(n)+O(m)
+    // 空间复杂度：O(1)。不考虑返回值的空间占用
+    var yanghuiTriangle2 = function (n, m) {
+      if (n <= 0 || m > 10000 || m >= n + 1) return false;
+      let result = 1;
+      let element = 1;
+
+      if (n == m || m == 1) {
+        return result;
+      }
+      for (let i = 1; i < m; i++) {
+        result *= n - i;
+      }
+      for (let j = 1; j < m; j++) {
+        element *= j;
+      }
+      result = result / element;
+      return result;
+    }
+
+    // 解法3:思路 由组合数公式C(n,m)=n!/(m)!(n-m)!，可以得到同一行相邻组合数的关系
+    // C(n,m) = C(n,m-1)*(n-m+1)/m,由于C(n,0) = 1;可以在线性时间内计算出第n行,m列的值
+    // 时间复杂度：O(N)
+    // 空间复杂度：O(1)。不考虑返回值的空间占用
+    var yanghuiTriangleBest = function (n, m) {
+      if (n <= 0 || m > 10000 || m >= n + 1) return false;
+      let result = 1;
+      if (n == m || m == 1) {
+        return result;
+      }
+      const row = new Array(2).fill(0);
+      n -= 1;
+      m -= 1;
+      row[0] = 1;
+      for (let i = 1; i <= m; i++) {
+        row[i % 2] = row[(i - 1) % 2] * (n - i + 1) / i;
+      }
+      return row[m % 2];
+    };
+    console.log(yanghuiTriangleBest(10, 5))
+  </script>
+</body>
+
+</html>

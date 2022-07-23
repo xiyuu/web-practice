@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>二叉树的遍历查找方式</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(data, left = null, right = null) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
+      }
+    }
+    const node2 = new Node('2');
+    const node3 = new Node('3');
+    this.root = new Node('1', node2, node3);
+    node2.left = new Node('4');
+    node2.right = new Node('5');
+    node3.left = new Node('6');
+    node3.right = new Node('7');
+    console.log(this.root);
+    // this.bfs();
+    // console.log(this.bfs());
+    // this.dfsPre();
+    // console.log(this.dfsPre());
+
+    // this.dfsPre1(this.root);
+    // console.log(this.dfsPre1(this.root));
+
+    // this.dfsPre();
+    // console.log(this.dfsPre());
+
+    // this.dfsMid();
+    // console.log(this.dfsMid());
+
+    this.nodes = []
+    // this.dfsAfter();
+    // console.log(this.dfsAfter())
+    function bfs() {
+      this.queue = [];
+      // 输出结果
+      this.result = [];
+      if (this.root.data !== null) {
+        this.queue.push(this.root);
+      }
+
+      while (this.queue.length > 0) {
+        const data = this.queue.shift();
+        this.result.push(data);
+
+        if (data.left !== null) {
+          this.queue.push(data.left);
+        }
+        if (data.right !== null) {
+          this.queue.push(data.right);
+        }
+      }
+      return this.result;
+    }
+
+    // 前序遍历
+    function dfsPre() {
+      this.stack = [];
+      this.preResult = [];
+      var cur = this.root;
+
+      while (cur !== null || this.stack.length > 0) {
+        while (cur !== null) {
+          this.preResult.push(cur);
+          this.stack.push(cur);
+
+          cur = cur.left;
+        }
+        cur = this.stack.pop();
+        cur = cur.right;
+      }
+      return this.preResult;
+    }
+    function dfsPre1(root) {
+      this.preResult1 = [];
+      this.preResult1.push(root);
+      if (root.left !== null) {
+        this.preResult1 = this.preResult1.concat(dfsPre1(root.left))
+      }
+      if (root.right !== null) {
+        this.preResult1 = this.preResult1.concat(dfsPre1(root.right))
+      }
+      return this.preResult1;
+    }
+
+    function dfsPre2() {
+      this.nodes = [];
+      this.dfsFunc(this.root, this.nodes);
+      return this.nodes;
+    }
+    function dfsFunc(root, nodes) {
+      if (root !== null) {
+        nodes.push(root);
+        this.dfsFunc(root.left, nodes)
+        this.dfsFunc(root.right, nodes)
+      }
+    }
+
+    // 中序遍历
+    function dfsMid() {
+      this.nodes = [];
+      this.dfsMidFunc(this.root, this.nodes);
+      return this.nodes;
+    }
+    function dfsMidFunc(root, nodes) {
+      if (root !== null) {
+        this.dfsMidFunc(root.left, nodes)
+        nodes.push(root);
+        this.dfsMidFunc(root.right, nodes)
+      }
+    }
+
+    // 后序遍历
+    function dfsAfter() {
+      this.nodes = [];
+      this.dfsAfterFunc(this.root, this.nodes);
+      return this.nodes;
+    }
+    function dfsAfterFunc(root, nodes) {
+      if (root !== null) {
+        this.dfsAfterFunc(root.left, nodes)
+        this.dfsAfterFunc(root.right, nodes)
+        nodes.push(root);
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    console.log(this.serialize(this.root))
+    // 序列化输出二叉树
+    function serialize(root) {
+      if (root == null) {
+        return '#'
+      }
+      var leftStr = this.serialize(root.left);
+      var rightStr = this.serialize(root.right);
+      return root.data + ',' + leftStr + ',' + rightStr
+    }
+    //反序列化二叉树
+    // const data = this.serialize(this.root);
+    // console.log(this.deserialize(data))
+    // console.log(this.deserialize1(data))
+    function deserialize(data) {
+      nodeStrs = data.split(',');
+      i = 0;
+      return deDfs(nodeStrs, i)
+    };
+    function deDfs(strs, i) {
+      str = strs[i];
+      i++;
+      if (str == '#') {
+        return null
+      }
+      const node = new Node(str)
+      node.left = deDfs(strs, i);
+      node.right = deDfs(strs, i);
+      return node;
+    };
+
+    function deserialize1(data) {
+      nodeStrs = data.split(',');
+      return deDfs1(nodeStrs)
+    };
+    function deDfs1(strs, i) {
+      const str = strs.shift()
+      if (str == '#') {
+        return null
+      }
+      const node = new Node(str)
+      node.left = deDfs1(strs);
+      node.right = deDfs1(strs);
+      return node;
+    };
+
+    // 二叉树最低层最左边的值(二叉树广度优先遍历)
+    console.log(this.findBottomLeftValue(this.root))
+    function findBottomLeftValue(root) {
+      var queue1 = [];
+      var queue2 = [];
+      queue1.push(root);
+      bottomLeft = root.data;
+      while (queue1.length > 0) {
+        node = queue1.shift();
+        if (node.left !== null) {
+          queue2.push(node.left);
+        }
+
+        if (node.right !== null) {
+          queue2.push(node.right);
+        }
+
+        if (queue1.length < 1) {
+          queue1 = queue2;
+          queue2 = [];
+          if (queue1.length > 0) {
+            bottomLeft = queue1[0].data;
+          }
+        }
+      }
+      return bottomLeft
+    }
+
+    // 二分查找
+    const nums = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    console.log('下标' + search(nums, 15));
+    function search(nums, target) {
+      left = 0;
+      right = nums.length - 1;
+      while (left <= right) {
+        mid = 
+        ;
+        if (nums[mid] == target) {
+          return mid;
+        }
+        if (nums[mid] > target) {
+          right = mid - 1;
+        } else {
+          left = mid + 1
+        }
+      }
+      return -1
+    }
+
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <title>斐波那契数</title>
+</head>
+
+<body>
+  <script>
+    //F(n)=F(n-1)+F(n-2)
+    console.log('---------------递归实现---------------')
+
+    function getFib(x) {
+      if (x == 1 || x == 2) { //
+        return 1;
+      }
+      return getFib(x - 1) + getFib(x - 2);
+    }
+    for (var i = 1; i <= 10; i++) {
+      console.log('斐波那契数第' + i + '列:' + getFib(i));
+    }
+    console.log('---------------FOR实现---------------')
+    //for循坏版
+    function demo(n) {
+      var a = 1;
+      var b = a;
+      var c;
+      for (var i = 1; i <= n; i++) {
+        if (i < 3) {
+          console.log('斐波那契数第' + i + '列:' + a);
+          continue;
+        } else {
+          c = a + b; //c就是第二个B的值
+          a = b; //原来B的值赋给A
+          b = c; //他们的和变成B
+          console.log('斐波那契数第' + i + '列:' + b);
+        }
+      }
+    }
+    demo(10);
+  </script>
+</body>
+
+</html>
