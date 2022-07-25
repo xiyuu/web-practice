@@ -162,17 +162,17 @@
       return root.data + ',' + leftStr + ',' + rightStr
     }
     //反序列化二叉树
-    // const data = this.serialize(this.root);
-    // console.log(this.deserialize(data))
-    // console.log(this.deserialize1(data))
+    const data = this.serialize(this.root);
+    console.log(this.deserialize(data))
+    console.log(this.deserialize1(data))
     function deserialize(data) {
       nodeStrs = data.split(',');
-      i = 0;
+      i = [0];
       return deDfs(nodeStrs, i)
     };
     function deDfs(strs, i) {
-      str = strs[i];
-      i++;
+      str = strs[i[0]];
+      i[0]++;
       if (str == '#') {
         return null
       }
@@ -186,7 +186,7 @@
       nodeStrs = data.split(',');
       return deDfs1(nodeStrs)
     };
-    function deDfs1(strs, i) {
+    function deDfs1(strs) {
       const str = strs.shift()
       if (str == '#') {
         return null
@@ -227,13 +227,12 @@
 
     // 二分查找
     const nums = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    console.log('下标' + search(nums, 15));
+    // console.log('下标' + search(nums, 15));
     function search(nums, target) {
       left = 0;
       right = nums.length - 1;
       while (left <= right) {
-        mid = 
-        ;
+        mid = Math.floor((left + right) / 2);
         if (nums[mid] == target) {
           return mid;
         }
@@ -245,9 +244,6 @@
       }
       return -1
     }
-
-
-
   </script>
 </body>
 

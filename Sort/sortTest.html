@@ -25,83 +25,269 @@
       }
       return quickSort(left).concat(mid, quickSort(right))
     }
-
-    // console.log(quickSort([5, 3, 45, 67, 8, 8, 9, 90, 0, 9]))
+    console.log(quickSort([5, 3, 45, 67, 8, 8, 9, 90, 0, 9]))
     // 冒泡排序
     // 原理，通过双重for循环比较两个相邻元素的值。定义一个中间变量，若后面的值小于前面的值，则交换位置
-    function bubble(arr) {
+    // function bubble(arr) {
+    //   for (var i = 0; i < arr.length; i++) {
+    //     for (var j = 0; j < arr.length - i - 1; j++) {
+    //       if (arr[j] > arr[j + 1]) {
+    //         var temp = arr[j];
+    //         arr[j] = arr[j + 1];
+    //         arr[j + 1] = temp;
+    //       }
+    //       console.log('第一层循环' + i, j, arr);
+    //     }
+    //     console.log('第二层循环' + i, j, arr);
+    //   }
+    //   return arr;
+    // }
+    // // console.log(bubble([5, 6, 1, 2, 4, 3]))
+    // // 选择排序
+    // function selectSort(arr) {
+    //   for (var i = 0; i < arr.length - 1; i++) {
+    //     var min = i;
+    //     for (var j = i + 1; j < arr.length; j++) {
+    //       if (arr[j] < arr[min]) {
+    //         min = j;
+    //       }
+    //     }
+    //     temp = arr[i];
+    //     arr[i] = arr[min];
+    //     arr[min] = temp;
+
+    //   }
+    //   return arr
+    // }
+    // // console.log(selectSort([5, 6, 1, 2, 4, 3]))
+    // // 归并排序
+    // // 合并两个已排序的数组
+    // // 返回一个合并后的已排序的新数组
+    // function mergeSortTopDown(arr) {
+    //   // 如果数组元素小于2 为0或者1，标明已排序
+    //   if (arr.length < 2) {
+    //     return arr
+    //   }
+    //   // 把数组从中间切为两部分，
+    //   var middle = Math.floor(arr.length / 2);
+    //   var left = arr.slice(0, middle)
+    //   var right = arr.slice(middle)
+    //   // 递归排序这两个子数组
+    //   // left = mergeSortTopDown(left)
+    //   // right = mergeSortTopDown(right)
+    //   // 合并两个已排序的子数组
+    //   return merge(mergeSortTopDown(left), mergeSortTopDown(right))
+    // }
+    // function merge(arr1, arr2) {
+    //   var result = [];
+    //   while (arr1.length && arr2.length) {
+    //     if (arr1[0] < arr2[0]) {
+    //       result.push(arr1.shift())
+    //     } else {
+    //       result.push(arr2.shift());
+    //     }
+    //   }
+    //   // 若两个元素中有元素剩余，合并入新数组
+    //   return result.concat(arr1, arr2);
+    // }
+    // console.log(mergeSortTopDown([25, 89, 544, 1, 5, 5, 3, 9]))
+
+
+
+    // 快排。选一个数为基准，将比他小的放在该元素之前，比他大的放在改元素之后。按照此种方式去进行循环调用
+    console.log(quickSort1([9, 8, 7, 59, 1, 45, 25, 26]))
+    function quickSort1(arr) {
+      if (arr.length < 2) { return arr }
+      var left = [];
+      var right = [];
+      var mid = arr.splice(Math.floor((arr.length - 1) / 2), 1)
       for (var i = 0; i < arr.length; i++) {
-        for (var j = 0; j < arr.length - i - 1; j++) {
-          if (arr[j] > arr[j + 1]) {
-            var temp = arr[j];
-            arr[j] = arr[j + 1];
-            arr[j + 1] = temp;
-          }
-          console.log('第一层循环' + i, j, arr);
-        }
-        console.log('第二层循环' + i, j, arr);
-      }
-      return arr;
-    }
-    // console.log(bubble([5, 6, 1, 2, 4, 3]))
-    // 选择排序
-    function selectSort(arr) {
-      for (var i = 0; i < arr.length - 1; i++) {
-        var min = i;
-        for (var j = i + 1; j < arr.length; j++) {
-          if (arr[j] < arr[min]) {
-            min = j;
-          }
-        }
-        temp = arr[i];
-        arr[i] = arr[min];
-        arr[min] = temp;
-
-      }
-      return arr
-    }
-
-    // console.log(selectSort([5, 6, 1, 2, 4, 3]))
-    // 归并排序
-    // 合并两个已排序的数组
-    // 返回一个合并后的已排序的新数组
-    function mergeSortTopDown(arr) {
-      // 如果数组元素小于2 为0或者1，标明已排序
-      if (arr.length < 2) {
-        return arr
-      }
-      // 把数组从中间切为两部分，
-      var middle = Math.floor(arr.length / 2);
-      var left = arr.slice(0, middle)
-      var right = arr.slice(middle)
-      // 递归排序这两个子数组
-      left = mergeSortTopDown(left)
-      console.log('left ' + left)
-      right = mergeSortTopDown(right)
-      console.log('right ' + right)
-      // 合并两个已排序的子数组
-      console.log('merge: ' + merge(left, right))
-      return merge(left, right)
-    }
-    function merge(arr1, arr2) {
-      console.log('arr1： ' + arr1)
-      console.log('arr2： ' + arr2)
-      var result = [];
-      while (arr1.length && arr2.length) {
-        if (arr1[0] < arr2[0]) {
-          result.push(arr1.shift())
+        if (arr[i] < mid) {
+          left.push(arr[i])
         } else {
-          result.push(arr2.shift());
+          right.push(arr[i])
         }
       }
-      // 若两个元素中有元素剩余，合并入新数组
-      console.log('result： ' + result.concat(arr1, arr2))
-      return result.concat(arr1, arr2);
+      return quickSort1(left).concat(mid, quickSort1(right))
     }
-    // var arr1 = [7, 3, 8];
-    // var arr2 = [6, 12, 5];
-    // console.log(merge(arr1, arr2))
-    console.log(mergeSortTopDown([25, 89, 544, 1, 5, 5, 3, 9]))
+
+
+    // 二分查找
+    // const nums = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    // // console.log('下标' + search(nums, 15));
+    // function search(nums, target) {
+    //   left = 0;
+    //   right = nums.length - 1;
+    //   while (left <= right) {
+    //     mid = Math.floor((left + right) / 2);
+    //     if (nums[mid] == target) {
+    //       return mid;
+    //     }
+    //     if (nums[mid] > target) {
+    //       right = mid - 1;
+    //     } else {
+    //       left = mid + 1
+    //     }
+    //   }
+    //   return -1
+    // }
+
+    // 归并排序
+    // 将一个长度为n的输入序列分成两个长度为n的输入序列
+    // 对于这连个子序列分别使用归并排序
+    // 将两个排序好的子序列分别进行最终合并
+
+    // function mergeSort1(arr) {
+    //   let len = arr.length;
+    //   if (arr.length < 2) {
+    //     return arr;
+    //   }
+
+    //   mid = Math.floor(arr.length / 2)
+    //   left = arr.slice(0, middle);
+    //   right = arr.slice(middle);
+    //   return merge1(mergeSort1(left),(mergeSort1(right));
+
+    // }
+    // function merge1(arr1, arr2) {
+    //   let result = [];
+    //   while (arr1.length && arr2.length) {
+    //     if (arr1[0] < arr2[0]) {
+    //       result.push(arr1.shift());
+    //     } else {
+    //       result.push(arr2.shift());
+    //     }
+    //   }
+    //   return result.concat(arr1, arr2);
+
+    // }
+
+
+    // 归并排序，先将一个长度为n的数组分为两个长度为n/2的数组，对两边数组进行排序。
+
+    function quickSort1(arr) {
+      var left = []
+      var right = []
+      var mid = arr.splice(Math.floor(arr.length / 2), 1)
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] < mid) {
+          left.push(arr[i])
+        } else {
+          right.push(arr[i])
+        }
+      }
+
+      return quickSort(left).concat(mid, quickSort(right))
+    }
+
+
+
+    // 二分法查找(在有序序列号里面从中间开始查找) 要找的数比中间数小，则在前面半部分找，right = mid-1
+    // 否则在后面半部分找
+    function search(arr, target) {
+      length = 0;
+      right = arr.length - 1
+      mid = Math.floor((left + right) / 2)
+      while (left < right) {
+        if (arr[mid] == target) {
+          return mid
+        }
+
+        if (arr[mid] > target) {
+          right = mid - 1
+        } else {
+          left = mid + 1
+        }
+      }
+
+      return -1
+
+    }
+
+
+    // 二叉树的遍历方式
+    // 广度优先遍历。
+    // 先定一个node，然后创建
+    class Node {
+      constructor(data, left = null, right = null) {
+        this.data = data;
+        this.left = left;
+        this.right = right
+      }
+    }
+
+    // 创建一个二叉树
+    // const nodeA = new Node('A')
+    const nodeB = new Node('B')
+    const nodeC = new Node('C')
+    const nodeD = new Node('D')
+    const nodeE = new Node('E')
+    const nodeF = new Node('F')
+    const nodeG = new Node('G')
+    this.root = new Node('A', nodeB, nodeC);
+    nodeB.left = nodeD
+    nodeB.right = nodeE
+
+    nodeC.left = nodeF
+    nodeC.right = nodeG
+    console.log(this.root)
+    console.log(this.bfs())
+
+
+    function bfs() {
+      this.queue = [];
+      this.result = [];
+      if (this.root !== null) {
+        this.queue.push(this.root)
+      }
+
+      while (this.queue.length > 0) {
+        const data = this.queue.shift();
+        this.result.push(data);
+        if (data.left !== null) {
+          this.queue.push(data.left);
+        }
+
+        if (data.right !== null) {
+          this.queue.push(data.right);
+        }
+      }
+      return this.result
+
+    }
+    // 深度优先遍历
+    // 前序遍历。中序遍历。后续遍历
+    function dfs() {
+      this.node = []
+      //前序遍历
+      dfsBefore(this.root, this.node)
+      return this.nodes;
+    }
+
+    function dfsBefore(root, nodes) {
+      if (root !== null) {
+        nodes.push(root);
+        dfsBefore(root.left, nodes);
+        dfsBefore(root.right, nodes);
+      }
+    }
+    function dfsMid(root, nodes) {
+      if (root !== null) {
+        dfsMid(root.left, nodes);
+        nodes.push(root);
+        dfsMid(root.right, nodes);
+      }
+    }
+    function dfsAfter(root, nodes) {
+      if (root !== null) {
+        dfsMid(root.left, nodes);
+        dfsMid(root.right, nodes);
+        nodes.push(root);
+      }
+    }
+
+
+
 
   </script>
 </body>
